@@ -1,9 +1,7 @@
 name: Docker
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+
 
 env:
   php-version: '8.1'
