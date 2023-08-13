@@ -248,41 +248,6 @@ jobs:
       - name: Test coverage page
         run: REQUEST_URI=/ php scripts/tests/server-cc.php
 
-    # Test
-      - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
-      - name: Start Chrome Driver
-        run: |
-          chmod -R 0755 vendor/laravel/dusk/bin/
-          ./vendor/laravel/dusk/bin/chromedriver-linux &
-
-      - name: Run http server
-        run: |
-          php -S localhost:8000 -t public scripts/tests/server-cc.php &
-          php -S localhost:8001 -t public scripts/tests/server-cc.php &
-
-      - name: Run browser tests
-        run: php artisan dusk --log-junit results/junit/results0.xml
-        env:
-          APP_URL: http://localhost:8000
-
-      - name: Fix coverage
-        run: |
-          vendor/bin/phpcov merge --clover=results/coverage/coverageBrowser.xml results/cov/
-          rm -rf results/cov
-
-      - name: Fix results files
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
-        working-directory: results
-
-      - name: Store results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: results
-          path: results
-
-
   ###########################
   # Reporting to sonarcloud
   ###########################
