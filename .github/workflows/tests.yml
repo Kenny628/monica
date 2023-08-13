@@ -146,7 +146,7 @@ jobs:
   # Reporting to sonarcloud
   ###########################
   reporting:
-    needs: [tests, tests_browser]
+    needs: [tests]
     runs-on: ubuntu-latest
     name: Sonarcloud
     if: ${{ ! startsWith(github.ref, 'dependabot/') }}
